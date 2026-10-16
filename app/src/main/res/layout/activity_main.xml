@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="カードじゃんけん"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/lifeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="あなたのライフ：3　相手のライフ：3"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/handText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="手札"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="手札からカードを選んでください"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/guButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="グー" />
+
+    <Button
+        android:id="@+id/chokiButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="チョキ" />
+
+    <Button
+        android:id="@+id/paButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="パー" />
+
+</LinearLayout>
