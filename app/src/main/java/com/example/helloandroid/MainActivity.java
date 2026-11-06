@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int playerLife = 3;
     private int enemyLife = 3;
+    private boolean isSpecialMode = false; // 特殊モードフラグ
 
     private ArrayList<Integer> playerHand;
     private ArrayList<Integer> enemyHand;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout enemyCardContainer;
 
     private LinearLayout startScreen;
+    private LinearLayout helpScreen; // 説明画面
     private LinearLayout gameScreen;
     private LinearLayout pauseScreen;
     private LinearLayout resultScreen;
@@ -52,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startScreen = findViewById(R.id.startScreen);
+        helpScreen = findViewById(R.id.helpScreen);
         gameScreen = findViewById(R.id.gameScreen);
         pauseScreen = findViewById(R.id.pauseScreen);
         resultScreen = findViewById(R.id.resultScreen);
 
         Button normalModeButton = findViewById(R.id.normalModeButton);
         Button specialModeButton = findViewById(R.id.specialModeButton);
+        Button helpButton = findViewById(R.id.helpButton);
+        Button backToTitleButton = findViewById(R.id.backToTitleButton);
 
         playerLifeText = findViewById(R.id.playerLifeText);
         enemyLifeText = findViewById(R.id.enemyLifeText);
@@ -83,18 +87,30 @@ public class MainActivity extends AppCompatActivity {
 
         // 通常モード
         normalModeButton.setOnClickListener(v -> {
+            isSpecialMode = false;
             startScreen.setVisibility(View.GONE);
             gameScreen.setVisibility(View.VISIBLE);
             startGame();
         });
 
-        // 特殊モード
+        // 特殊モード（ライフ5・手札7枚）
         specialModeButton.setOnClickListener(v -> {
-            Toast.makeText(
-                    MainActivity.this, // ※もしエラーが出たら MainActivity.this に直してください
-                    "特殊モードは現在準備中です！",
-                    Toast.LENGTH_SHORT
-            ).show();
+            isSpecialMode = true;
+            startScreen.setVisibility(View.GONE);
+            gameScreen.setVisibility(View.VISIBLE);
+            startGame();
+        });
+
+        // 遊び方説明ボタン（タイトル画面のみ）
+        helpButton.setOnClickListener(v -> {
+            startScreen.setVisibility(View.GONE);
+            helpScreen.setVisibility(View.VISIBLE);
+        });
+
+        // 説明画面からタイトルに戻るボタン
+        backToTitleButton.setOnClickListener(v -> {
+            helpScreen.setVisibility(View.GONE);
+            startScreen.setVisibility(View.VISIBLE);
         });
 
         // ポーズボタン
@@ -138,21 +154,27 @@ public class MainActivity extends AppCompatActivity {
 
     // ゲーム開始
     private void startGame() {
-        playerLife = 3;
-        enemyLife = 3;
+        if (isSpecialMode) {
+            playerLife = 5;
+            enemyLife = 5;
+        } else {
+            playerLife = 3;
+            enemyLife = 3;
+        }
 
+        int cardCountPerHand = isSpecialMode ? 7 : 5;
         ArrayList<Integer> deck = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
-            deck.add(0);
-            deck.add(1);
-            deck.add(2);
+        for (int i = 0; i < cardCountPerHand; i++) {
+            deck.add(0); // ✊
+            deck.add(1); // ✌️
+            deck.add(2); // ✋
         }
 
         Collections.shuffle(deck);
 
-        playerHand = new ArrayList<>(deck.subList(0, 5));
-        enemyHand = new ArrayList<>(deck.subList(5, 10));
+        playerHand = new ArrayList<>(deck.subList(0, cardCountPerHand));
+        enemyHand = new ArrayList<>(deck.subList(cardCountPerHand, cardCountPerHand * 2));
 
         pauseButton.setEnabled(true);
         battlePlayerCard.setVisibility(View.INVISIBLE);
@@ -160,7 +182,11 @@ public class MainActivity extends AppCompatActivity {
 
         updateScreen();
 
-        resultText.setText("手札からカードを選んでください");
+        if (isSpecialMode) {
+            resultText.setText("【特殊モード】手札からカードを選んでください");
+        } else {
+            resultText.setText("手札からカードを選んでください");
+        }
     }
 
     // カードをタップした時の処理
@@ -170,32 +196,26 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 操作を一時無効化
         pauseButton.setEnabled(false);
         setCardsEnabled(false);
 
-        // 1. 相手の出すカードをランダムに決定
         int enemyIndex = random.nextInt(enemyHand.size());
         int enemyChoice = enemyHand.get(enemyIndex);
 
-        // 2. バトルエリアにカードをセット（自分は左・表、相手は右・裏）
         battlePlayerCard.setText(hands[playerChoice]);
         battlePlayerCard.setBackgroundResource(R.drawable.card_background);
         battlePlayerCard.setVisibility(View.VISIBLE);
 
-        battleEnemyCard.setText(""); // 最初は裏向きなので文字なし
+        battleEnemyCard.setText("");
         battleEnemyCard.setBackgroundResource(R.drawable.enemy_card_background);
         battleEnemyCard.setVisibility(View.VISIBLE);
 
         resultText.setText("カードをセット！ 相手が選んでいます...");
 
-        // 3. 1秒後に相手のカードをめくる
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // 相手のカードをめくる（背景を白にして文字を表示）
             battleEnemyCard.setText(hands[enemyChoice]);
             battleEnemyCard.setBackgroundResource(R.drawable.card_background);
 
-            // 4. 勝敗判定を実行
             resolveJanken(playerChoice, enemyChoice, enemyIndex);
 
         }, 1000);
@@ -223,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
         updateScreen();
         pauseButton.setEnabled(true);
 
-        // ライフによる終了判定
         if (playerLife <= 0 || enemyLife <= 0) {
             if (playerLife <= 0 && enemyLife <= 0) {
                 message += "\n引き分け！";
@@ -237,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 手札による終了判定
         if (playerHand.isEmpty() || enemyHand.isEmpty()) {
             if (playerLife > enemyLife) {
                 message += "\n手札がなくなりました！あなたの勝ち！";
@@ -257,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
         enemyLifeText.setText("相手ライフ：" + getHearts(enemyLife));
         playerLifeText.setText("あなたライフ：" + getHearts(playerLife));
 
-        // --- ① 自分の手札カードを再生成 ---
         cardContainer.removeAllViews();
         for (int i = 0; i < playerHand.size(); i++) {
             int cardType = playerHand.get(i);
@@ -275,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
             cardContainer.addView(cardButton);
         }
 
-        // --- ② 相手の手札（裏向きカード）を再生成 ---
         enemyCardContainer.removeAllViews();
         for (int i = 0; i < enemyHand.size(); i++) {
             View enemyCardView = new View(this);
@@ -289,7 +305,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // 残りライフの数だけ♡を生成するヘルパーメソッド
     private String getHearts(int life) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < life; i++) {
@@ -301,14 +316,12 @@ public class MainActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    // すべてのカードボタンの有効/無効を一括切り替え
     private void setCardsEnabled(boolean enabled) {
         for (int i = 0; i < cardContainer.getChildCount(); i++) {
             cardContainer.getChildAt(i).setEnabled(enabled);
         }
     }
 
-    // ゲーム終了
     private void endGame() {
         finalPlayerLifeText.setText("あなたのライフ：" + getHearts(playerLife));
         finalEnemyLifeText.setText("相手のライフ：" + getHearts(enemyLife));

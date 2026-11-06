@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resultScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="対戦結果"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp" />
+
+    <TextView
+        android:id="@+id/finalPlayerLifeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="あなたのライフ：0"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/finalEnemyLifeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="相手のライフ：0"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:layout_marginBottom="40dp" />
+
+    <TextView
+        android:id="@+id/finalResultText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="あなたの勝ち！"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="50dp" />
+
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="もう一度"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/titleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="タイトルに戻る"
+        android:textSize="20sp" />
+
+</LinearLayout>
