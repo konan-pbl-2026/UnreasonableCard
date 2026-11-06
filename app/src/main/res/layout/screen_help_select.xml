@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/helpSelectScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="遊び方説明"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="40dp" />
+
+    <Button
+        android:id="@+id/normalHelpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="通常モードの説明"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/specialHelpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="特殊モードの説明"
+        android:textSize="20sp"
+        android:layout_marginBottom="40dp" />
+
+    <Button
+        android:id="@+id/helpSelectBackButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="タイトルに戻る"
+        android:textSize="20sp" />
+
+</LinearLayout>

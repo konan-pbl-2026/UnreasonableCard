@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/helpScreen"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/helpNormalScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="遊び方ルール"
+        android:text="通常モードの遊び方"
         android:textSize="28sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp" />
@@ -20,16 +19,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードは ライフ3 / 手札5枚 です。\n\n・特殊モードは ライフ5 / 手札7枚 のロングバトル！\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
+        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードはライフ3 / 手札5枚です。\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
         android:textSize="16sp"
         android:lineSpacingExtra="6dp"
         android:layout_marginBottom="40dp" />
 
     <Button
-        android:id="@+id/backToTitleButton"
+        android:id="@+id/normalHelpBackButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="タイトルに戻る"
+        android:text="説明選択に戻る"
         android:textSize="20sp" />
 
 </LinearLayout>

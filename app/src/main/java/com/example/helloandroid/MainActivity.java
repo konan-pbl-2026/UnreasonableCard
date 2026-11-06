@@ -1,3 +1,4 @@
+
 package com.example.helloandroid;
 
 import android.os.Bundle;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int playerLife = 3;
     private int enemyLife = 3;
-    private boolean isSpecialMode = false; // 特殊モードフラグ
+    private boolean isSpecialMode = false;
 
     private ArrayList<Integer> playerHand;
     private ArrayList<Integer> enemyHand;
@@ -35,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView finalResultText;
 
     private Button pauseButton;
+
     private LinearLayout cardContainer;
     private LinearLayout enemyCardContainer;
 
     private LinearLayout startScreen;
-    private LinearLayout helpScreen; // 説明画面
+    private LinearLayout helpSelectScreen;
+    private LinearLayout helpNormalScreen;
+    private LinearLayout helpSpecialScreen;
     private LinearLayout gameScreen;
     private LinearLayout pauseScreen;
     private LinearLayout resultScreen;
@@ -52,17 +56,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 各画面
         startScreen = findViewById(R.id.startScreen);
-        helpScreen = findViewById(R.id.helpScreen);
+        helpSelectScreen = findViewById(R.id.helpSelectScreen);
+        helpNormalScreen = findViewById(R.id.helpNormalScreen);
+        helpSpecialScreen = findViewById(R.id.helpSpecialScreen);
         gameScreen = findViewById(R.id.gameScreen);
         pauseScreen = findViewById(R.id.pauseScreen);
         resultScreen = findViewById(R.id.resultScreen);
 
+        // タイトル画面のボタン
         Button normalModeButton = findViewById(R.id.normalModeButton);
         Button specialModeButton = findViewById(R.id.specialModeButton);
         Button helpButton = findViewById(R.id.helpButton);
-        Button backToTitleButton = findViewById(R.id.backToTitleButton);
 
+        // 説明画面のボタン
+        Button normalHelpButton = findViewById(R.id.normalHelpButton);
+        Button specialHelpButton = findViewById(R.id.specialHelpButton);
+        Button helpSelectBackButton = findViewById(R.id.helpSelectBackButton);
+        Button normalHelpBackButton = findViewById(R.id.normalHelpBackButton);
+        Button specialHelpBackButton = findViewById(R.id.specialHelpBackButton);
+
+        // ゲーム画面の部品
         playerLifeText = findViewById(R.id.playerLifeText);
         enemyLifeText = findViewById(R.id.enemyLifeText);
         resultText = findViewById(R.id.resultText);
@@ -78,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         enemyCardContainer = findViewById(R.id.enemyCardContainer);
 
         pauseButton = findViewById(R.id.pauseButton);
+
         Button resumeButton = findViewById(R.id.resumeButton);
         Button pauseRetryButton = findViewById(R.id.pauseRetryButton);
         Button pauseTitleButton = findViewById(R.id.pauseTitleButton);
@@ -85,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         Button retryButton = findViewById(R.id.retryButton);
         Button titleButton = findViewById(R.id.titleButton);
 
-        // 通常モード
+        // 通常モード開始
         normalModeButton.setOnClickListener(v -> {
             isSpecialMode = false;
             startScreen.setVisibility(View.GONE);
@@ -93,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             startGame();
         });
 
-        // 特殊モード（ライフ5・手札7枚）
+        // 特殊モード開始
         specialModeButton.setOnClickListener(v -> {
             isSpecialMode = true;
             startScreen.setVisibility(View.GONE);
@@ -101,16 +117,40 @@ public class MainActivity extends AppCompatActivity {
             startGame();
         });
 
-        // 遊び方説明ボタン（タイトル画面のみ）
+        // 遊び方説明を開く
         helpButton.setOnClickListener(v -> {
             startScreen.setVisibility(View.GONE);
-            helpScreen.setVisibility(View.VISIBLE);
+            helpSelectScreen.setVisibility(View.VISIBLE);
         });
 
-        // 説明画面からタイトルに戻るボタン
-        backToTitleButton.setOnClickListener(v -> {
-            helpScreen.setVisibility(View.GONE);
+        // 通常モードの説明を開く
+        normalHelpButton.setOnClickListener(v -> {
+            helpSelectScreen.setVisibility(View.GONE);
+            helpNormalScreen.setVisibility(View.VISIBLE);
+        });
+
+        // 特殊モードの説明を開く
+        specialHelpButton.setOnClickListener(v -> {
+            helpSelectScreen.setVisibility(View.GONE);
+            helpSpecialScreen.setVisibility(View.VISIBLE);
+        });
+
+        // 説明選択画面からタイトルへ
+        helpSelectBackButton.setOnClickListener(v -> {
+            helpSelectScreen.setVisibility(View.GONE);
             startScreen.setVisibility(View.VISIBLE);
+        });
+
+        // 通常モード説明から説明選択へ
+        normalHelpBackButton.setOnClickListener(v -> {
+            helpNormalScreen.setVisibility(View.GONE);
+            helpSelectScreen.setVisibility(View.VISIBLE);
+        });
+
+        // 特殊モード説明から説明選択へ
+        specialHelpBackButton.setOnClickListener(v -> {
+            helpSpecialScreen.setVisibility(View.GONE);
+            helpSelectScreen.setVisibility(View.VISIBLE);
         });
 
         // ポーズボタン
@@ -154,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ゲーム開始
     private void startGame() {
+
         if (isSpecialMode) {
             playerLife = 5;
             enemyLife = 5;
@@ -163,20 +204,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int cardCountPerHand = isSpecialMode ? 7 : 5;
+
         ArrayList<Integer> deck = new ArrayList<>();
 
         for (int i = 0; i < cardCountPerHand; i++) {
-            deck.add(0); // ✊
-            deck.add(1); // ✌️
-            deck.add(2); // ✋
+            deck.add(0);
+            deck.add(1);
+            deck.add(2);
         }
 
         Collections.shuffle(deck);
 
-        playerHand = new ArrayList<>(deck.subList(0, cardCountPerHand));
-        enemyHand = new ArrayList<>(deck.subList(cardCountPerHand, cardCountPerHand * 2));
+        playerHand = new ArrayList<>(
+                deck.subList(0, cardCountPerHand)
+        );
+
+        enemyHand = new ArrayList<>(
+                deck.subList(cardCountPerHand, cardCountPerHand * 2)
+        );
 
         pauseButton.setEnabled(true);
+
         battlePlayerCard.setVisibility(View.INVISIBLE);
         battleEnemyCard.setVisibility(View.INVISIBLE);
 
@@ -191,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
     // カードをタップした時の処理
     private void playJanken(int playerChoice) {
+
         if (playerLife <= 0 || enemyLife <= 0
                 || playerHand.isEmpty() || enemyHand.isEmpty()) {
             return;
@@ -213,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
         resultText.setText("カードをセット！ 相手が選んでいます...");
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
             battleEnemyCard.setText(hands[enemyChoice]);
             battleEnemyCard.setBackgroundResource(R.drawable.card_background);
 
@@ -223,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     // じゃんけんの勝敗判定
     private void resolveJanken(int playerChoice, int enemyChoice, int enemyIndex) {
+
         playerHand.remove(Integer.valueOf(playerChoice));
         enemyHand.remove(enemyIndex);
 
@@ -230,20 +281,27 @@ public class MainActivity extends AppCompatActivity {
                 + " / 相手：" + hands[enemyChoice] + "\n";
 
         if (playerChoice == enemyChoice) {
+
             message += "あいこ！ライフは変化なし";
+
         } else if ((playerChoice - enemyChoice + 3) % 3 == 2) {
+
             enemyLife--;
             message += "あなたの勝ち！相手のライフ -1";
+
         } else {
+
             playerLife--;
             message += "あなたの負け！自分のライフ -1";
         }
 
         resultText.setText(message);
         updateScreen();
+
         pauseButton.setEnabled(true);
 
         if (playerLife <= 0 || enemyLife <= 0) {
+
             if (playerLife <= 0 && enemyLife <= 0) {
                 message += "\n引き分け！";
             } else if (enemyLife <= 0) {
@@ -251,12 +309,14 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 message += "\nゲーム終了！あなたの負け！";
             }
+
             resultText.setText(message);
             endGame();
             return;
         }
 
         if (playerHand.isEmpty() || enemyHand.isEmpty()) {
+
             if (playerLife > enemyLife) {
                 message += "\n手札がなくなりました！あなたの勝ち！";
             } else if (playerLife < enemyLife) {
@@ -264,19 +324,22 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 message += "\n手札がなくなりました！引き分け！";
             }
+
             resultText.setText(message);
             endGame();
-            return;
         }
     }
 
     // 画面表示の更新
     private void updateScreen() {
+
         enemyLifeText.setText("相手ライフ：" + getHearts(enemyLife));
         playerLifeText.setText("あなたライフ：" + getHearts(playerLife));
 
         cardContainer.removeAllViews();
+
         for (int i = 0; i < playerHand.size(); i++) {
+
             int cardType = playerHand.get(i);
 
             Button cardButton = new Button(this);
@@ -284,20 +347,29 @@ public class MainActivity extends AppCompatActivity {
             cardButton.setTextSize(18);
             cardButton.setBackgroundResource(R.drawable.card_background);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(130, 180);
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(130, 180);
+
             params.setMargins(8, 0, 8, 0);
             cardButton.setLayoutParams(params);
 
             cardButton.setOnClickListener(v -> playJanken(cardType));
+
             cardContainer.addView(cardButton);
         }
 
         enemyCardContainer.removeAllViews();
-        for (int i = 0; i < enemyHand.size(); i++) {
-            View enemyCardView = new View(this);
-            enemyCardView.setBackgroundResource(R.drawable.enemy_card_background);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(130, 180);
+        for (int i = 0; i < enemyHand.size(); i++) {
+
+            View enemyCardView = new View(this);
+            enemyCardView.setBackgroundResource(
+                    R.drawable.enemy_card_background
+            );
+
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(130, 180);
+
             params.setMargins(8, 0, 8, 0);
             enemyCardView.setLayoutParams(params);
 
@@ -305,26 +377,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ライフをハートで表示
     private String getHearts(int life) {
+
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < life; i++) {
             sb.append("♥");
         }
+
         if (life <= 0) {
             sb.append("（なし）");
         }
+
         return sb.toString();
     }
 
+    // カードの有効・無効を切り替える
     private void setCardsEnabled(boolean enabled) {
+
         for (int i = 0; i < cardContainer.getChildCount(); i++) {
             cardContainer.getChildAt(i).setEnabled(enabled);
         }
     }
 
+    // 対戦終了
     private void endGame() {
-        finalPlayerLifeText.setText("あなたのライフ：" + getHearts(playerLife));
-        finalEnemyLifeText.setText("相手のライフ：" + getHearts(enemyLife));
+
+        finalPlayerLifeText.setText(
+                "あなたのライフ：" + getHearts(playerLife)
+        );
+
+        finalEnemyLifeText.setText(
+                "相手のライフ：" + getHearts(enemyLife)
+        );
 
         if (playerLife > enemyLife) {
             finalResultText.setText("あなたの勝ち！");
