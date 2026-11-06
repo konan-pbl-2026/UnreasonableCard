@@ -1,6 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gameScreen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:visibility="gone">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 最上部：ポーズボタンとタイトル -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ⅱ ポーズ" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="カードじゃんけん"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="88dp"
+            android:layout_height="1dp" />
+
+    </LinearLayout>
+
+    <!-- 相手のライフと手札 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#F5F5F5"
+        android:padding="6dp"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:id="@+id/enemyLifeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="相手ライフ：♥♥♥"
+            android:textSize="14sp"
+            android:textColor="#E91E63"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/enemyCardContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="2dp" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <!-- 中央：バトルカードと結果 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="4dp">
+
+        <!-- バトルカード -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="12dp">
+
+            <!-- 自分のカード -->
+            <TextView
+                android:id="@+id/battlePlayerCard"
+                android:layout_width="170dp"
+                android:layout_height="240dp"
+                android:background="@drawable/card_background"
+                android:gravity="center"
+                android:text=""
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:visibility="invisible"
+                android:layout_marginEnd="16dp" />
+
+            <!-- 相手のカード -->
+            <TextView
+                android:id="@+id/battleEnemyCard"
+                android:layout_width="170dp"
+                android:layout_height="240dp"
+                android:background="@drawable/enemy_card_background"
+                android:gravity="center"
+                android:text=""
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:visibility="invisible"
+                android:layout_marginStart="16dp" />
+
+        </LinearLayout>
+
+        <!-- 結果メッセージ -->
+        <TextView
+            android:id="@+id/resultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="手札からカードを選んでください"
+            android:textSize="16sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <!-- 下部：自分の手札・特殊カード・ライフ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#F5F5F5"
+        android:padding="6dp"
+        android:layout_marginTop="4dp">
+
+        <!-- 通常カードと特殊カードを横並び -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- 自分の通常カード -->
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/cardContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:padding="2dp" />
+
+            </HorizontalScrollView>
+
+            <!-- 特殊カード表示エリア -->
+            <LinearLayout
+                android:layout_width="115dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="3dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特殊カード"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
+
+                <LinearLayout
+                    android:id="@+id/specialCardContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 自分のライフ -->
+        <TextView
+            android:id="@+id/playerLifeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="あなたライフ：♥♥♥"
+            android:textSize="14sp"
+            android:textColor="#E91E63"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
