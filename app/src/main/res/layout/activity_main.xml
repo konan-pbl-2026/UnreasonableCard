@@ -7,7 +7,15 @@
     <include layout="@layout/screen_help_select" />
     <include layout="@layout/screen_help_normal" />
     <include layout="@layout/screen_help_special" />
-    <include layout="@layout/screen_game" />
+
+    <include
+        android:id="@+id/normalGameLayout"
+        layout="@layout/screen_game" />
+
+    <include
+        android:id="@+id/specialGameLayout"
+        layout="@layout/screen_special" />
+
     <include layout="@layout/screen_pause" />
     <include layout="@layout/screen_result" />
 
