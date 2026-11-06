@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・特殊モードはライフ5 / 手札7枚のロングバトルです。\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
+        android:text="・特殊カード：カードを出すと、じゃんけん勝負後に、カード特有の効果が発動する\n\n・勝ち負け逆転：勝敗が入れ替わる\n\n・ライフ回復：勝つとライフが増え、負けると減る。引き分けには効果がない\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
         android:textSize="16sp"
         android:lineSpacingExtra="6dp"
         android:layout_marginBottom="40dp" />
