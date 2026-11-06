@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pauseScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PAUSE"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="50dp" />
+
+    <Button
+        android:id="@+id/resumeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ゲームに戻る"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/pauseRetryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最初から"
+        android:textSize="20sp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/pauseTitleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="タイトルに戻る"
+        android:textSize="20sp" />
+
+</LinearLayout>
