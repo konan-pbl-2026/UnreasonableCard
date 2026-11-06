@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout cardContainer;
     private LinearLayout enemyCardContainer;
 
-    private LinearLayout startScreen;
+    private View startScreen;
     private LinearLayout helpScreen; // 説明画面
     private LinearLayout gameScreen;
     private LinearLayout pauseScreen;

@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/helpScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="24dp"
-    android:visibility="gone">
+    android:visibility="invisible">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:text="遊び方ルール"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードは ライフ3 / 手札5枚 です。\n\n・特殊モードは ライフ5 / 手札7枚 のロングバトル！\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
-        android:textSize="16sp"
+        android:layout_marginBottom="40dp"
         android:lineSpacingExtra="6dp"
-        android:layout_marginBottom="40dp" />
+        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードは ライフ3 / 手札5枚 です。\n\n・特殊モードは ライフ5 / 手札7枚 のロングバトル！\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/backToTitleButton"

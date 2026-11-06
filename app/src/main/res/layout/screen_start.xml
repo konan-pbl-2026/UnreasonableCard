@@ -8,14 +8,6 @@
     android:gravity="center"
     android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="カードじゃんけん"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
-
     <Button
         android:id="@+id/normalModeButton"
         android:layout_width="match_parent"
@@ -34,7 +26,7 @@
 
     <Button
         android:id="@+id/helpButton"
-        android:layout_width="match_parent"
+        android:layout_width="485dp"
         android:layout_height="wrap_content"
         android:text="遊び方説明"
         android:textSize="20sp" />
