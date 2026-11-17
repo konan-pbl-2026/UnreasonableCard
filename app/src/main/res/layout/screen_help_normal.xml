@@ -4,25 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+    android:gravity="bottom|center_horizontal"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:paddingBottom="120dp"
     android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="通常モードの遊び方"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
-
-    <TextView
+    <!-- タイトルと説明文をまとめて囲むオフホワイトの枠 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードはライフ3 / 手札5枚です。\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
-        android:textSize="16sp"
-        android:lineSpacingExtra="6dp"
-        android:layout_marginBottom="40dp" />
+        android:orientation="vertical"
+        android:background="#F8F9FA"
+        android:padding="20dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="通常モードの遊び方"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="・手札からカード（✊ ✌️ ✋）を選んで勝負します。\n\n・じゃんけんに勝つと相手のライフ（♥）を1削ります。\n\n・通常モードはライフ3 / 手札5枚です。\n\n・先に相手のライフを0にするか、手札がなくなった時の残りライフが多い方の勝ちです。"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:lineSpacingExtra="6dp" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/normalHelpBackButton"

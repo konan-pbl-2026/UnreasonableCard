@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="bottom|center_horizontal"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:paddingBottom="120dp"
     android:visibility="gone">
 
     <TextView
@@ -14,7 +17,7 @@
         android:text="PAUSE"
         android:textSize="36sp"
         android:textStyle="bold"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginBottom="40dp" />
 
     <Button
         android:id="@+id/resumeButton"
@@ -22,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="ゲームに戻る"
         android:textSize="20sp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/pauseRetryButton"
@@ -30,7 +33,7 @@
         android:layout_height="wrap_content"
         android:text="最初から"
         android:textSize="20sp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/pauseTitleButton"
