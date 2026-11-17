@@ -3,6 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- 背景画像を追加 -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/home_background" />
+
     <include layout="@layout/screen_start" />
     <include layout="@layout/screen_help_select" />
     <include layout="@layout/screen_help_normal" />

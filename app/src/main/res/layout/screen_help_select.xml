@@ -4,8 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
+    android:gravity="bottom|center_horizontal"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:paddingBottom="120dp"
     android:visibility="gone">
 
     <TextView
@@ -22,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="通常モードの説明"
         android:textSize="20sp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/specialHelpButton"
@@ -30,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="特殊モードの説明"
         android:textSize="20sp"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="32dp" />
 
     <Button
         android:id="@+id/helpSelectBackButton"
