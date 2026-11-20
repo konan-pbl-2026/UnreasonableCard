@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout helpNormalScreen;
     private LinearLayout helpSpecialScreen;
 
+    private TextView enemySpecialCardCountText;
+
     // 各ゲーム画面
     private LinearLayout normalGameScreen;
     private LinearLayout specialGameScreen;
@@ -247,14 +249,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 選択したモードの画面部品を取得する
+    // 選択したモードの画面部品を取得する
     private void setGameViews() {
 
         LinearLayout currentScreen;
 
+        // 使用する画面を決定する
         if (isSpecialMode) {
             currentScreen = specialGameScreen;
         } else {
             currentScreen = normalGameScreen;
+        }
+
+        // 特殊モードの画面部品
+        if (isSpecialMode) {
+            specialCardContainer =
+                    currentScreen.findViewById(R.id.specialCardContainer);
+
+            enemySpecialCardCountText =
+                    currentScreen.findViewById(R.id.enemySpecialCardCountText);
         }
 
         playerLifeText = currentScreen.findViewById(R.id.playerLifeText);
@@ -268,11 +281,6 @@ public class MainActivity extends AppCompatActivity {
         enemyCardContainer = currentScreen.findViewById(R.id.enemyCardContainer);
 
         pauseButton = currentScreen.findViewById(R.id.pauseButton);
-
-        if (isSpecialMode) {
-            specialCardContainer =
-                    currentScreen.findViewById(R.id.specialCardContainer);
-        }
 
         // ポーズボタン
         pauseButton.setOnClickListener(v -> {
@@ -295,23 +303,15 @@ public class MainActivity extends AppCompatActivity {
 
         selectedSpecialCard = -1;
 
-        // 3種類の特殊カードを用意
-        ArrayList<Integer> specialDeck = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            specialDeck.add(i);
+        // 自分にランダムで2枚配る
+        for (int i = 0; i < 2; i++) {
+            playerSpecialCards.add(random.nextInt(3));
         }
 
-        // シャッフル
-        Collections.shuffle(specialDeck);
-
-        // 自分に1枚
-        playerSpecialCards.add(specialDeck.get(0));
-
-        // 相手に1枚（自分とは重複しない）
-        enemySpecialCards.add(specialDeck.get(1));
-
-        // specialDeck.get(2) は未配布
+        // 相手にランダムで2枚配る
+        for (int i = 0; i < 2; i++) {
+            enemySpecialCards.add(random.nextInt(3));
+        }
     }
 
     // 自分の特殊カードを表示する
@@ -322,6 +322,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         specialCardContainer.removeAllViews();
+
+        specialCardContainer.setOrientation(LinearLayout.HORIZONTAL);
 
         if (!isSpecialMode) {
             specialCardContainer.setVisibility(View.GONE);
@@ -340,9 +342,11 @@ public class MainActivity extends AppCompatActivity {
 
             LinearLayout.LayoutParams params =
                     new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            55
+                            130,
+                            180
                     );
+
+            params.setMargins(8, 0, 8, 0);
 
             params.setMargins(2, 3, 2, 3);
             specialButton.setLayoutParams(params);
@@ -378,29 +382,19 @@ public class MainActivity extends AppCompatActivity {
             specialCardContainer.addView(specialButton);
         }
 
-        // 特殊カードを使わない選択肢
-        Button noSpecialButton = new Button(this);
+    }
 
-        noSpecialButton.setText("使わない");
-        noSpecialButton.setTextSize(11);
+    // 相手の特殊カード枚数を表示
+    private void updateEnemySpecialCardCount() {
 
-        LinearLayout.LayoutParams noParams =
-                new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        45
-                );
+        if (enemySpecialCardCountText == null) {
+            return;
+        }
 
-        noParams.setMargins(2, 3, 2, 3);
-        noSpecialButton.setLayoutParams(noParams);
-
-        noSpecialButton.setOnClickListener(v -> {
-
-            selectedSpecialCard = -1;
-
-            updateSpecialCards();
-        });
-
-        specialCardContainer.addView(noSpecialButton);
+        enemySpecialCardCountText.setText(
+                "相手の特殊カード：" +
+                        enemySpecialCards.size() + "枚"
+        );
     }
 
     // 特殊カードの操作を有効・無効にする
@@ -453,6 +447,8 @@ public class MainActivity extends AppCompatActivity {
             enemySpecialCards.clear();
             selectedSpecialCard = -1;
         }
+
+        updateEnemySpecialCardCount();
 
         playerHand = new ArrayList<>(
                 deck.subList(0, cardCountPerHand)
@@ -867,6 +863,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 特殊カード表示を更新
         updateSpecialCards();
+
+        updateEnemySpecialCardCount();
     }
 
     // ライフをハートで表示

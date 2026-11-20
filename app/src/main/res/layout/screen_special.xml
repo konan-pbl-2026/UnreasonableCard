@@ -48,6 +48,16 @@
             android:textStyle="bold"
             android:layout_marginBottom="4dp" />
 
+        <TextView
+            android:id="@+id/enemySpecialCardCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="相手の特殊カード：2枚"
+            android:textSize="14sp"
+            android:textColor="#00C853"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
