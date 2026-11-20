@@ -1,6 +1,7 @@
 
 package com.example.helloandroid;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -423,6 +424,11 @@ public class MainActivity extends AppCompatActivity {
 
         pauseButton.setEnabled(true);
 
+        // 前回のじゃんけん結果を消す
+        resultText.setText("手札からカードを選んでください");
+        resultText.setTextColor(Color.parseColor("#00C853"));
+
+        // 前回表示したカードを隠す
         battlePlayerCard.setVisibility(View.INVISIBLE);
         battleEnemyCard.setVisibility(View.INVISIBLE);
 
@@ -565,28 +571,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // specialCard1の効果
-        // どちらかがspecialCard1を使用していた場合
         if (isSpecialMode && winner != 0
                 && (playerSpecialUsed == 0
                 || enemySpecialUsed == 0)) {
 
             if (winner == 1) {
 
-                // 自分が勝利
-                playerLife = Math.min(3, playerLife + 1);
-
-                message += "\n特殊効果発動！あなたのライフ＋1";
+                // 自分が勝利した場合
+                if (playerLife < 3) {
+                    playerLife++;
+                    message += "\n特殊効果発動！あなたのライフ＋1";
+                } else {
+                    message += "\n特殊効果発動！あなたのライフは最大です";
+                }
 
             } else {
 
-                // 相手が勝利
-                enemyLife = Math.min(3, enemyLife + 1);
-
-                message += "\n特殊効果発動！相手のライフ＋1";
+                // 相手が勝利した場合
+                if (enemyLife < 3) {
+                    enemyLife++;
+                    message += "\n特殊効果発動！相手のライフ＋1";
+                } else {
+                    message += "\n特殊効果発動！相手のライフは最大です";
+                }
             }
         }
 
         resultText.setText(message);
+
+        resultText.setTextColor(Color.parseColor("#00C853"));
 
         updateScreen();
 
