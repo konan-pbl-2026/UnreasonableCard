@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
     // 特殊カード名
     private final String[] specialCardNames = {
-            "specialCard1",
-            "specialCard2",
-            "specialCard3"
+            "体力吸収",
+            "あとだし",
+            "勝敗逆転"
     };
 
     @Override
@@ -606,6 +606,7 @@ public class MainActivity extends AppCompatActivity {
         pauseButton.setEnabled(true);
 
         // ライフが0になった場合
+        finalResultText.setTextColor(Color.parseColor("#00C853"));
         if (playerLife <= 0 || enemyLife <= 0) {
 
             if (playerLife <= 0 && enemyLife <= 0) {
