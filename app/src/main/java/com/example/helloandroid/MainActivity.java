@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 自分が選択している特殊カード
     // -1 = 選択なし
-    private int selectedSpecialCard = -1;
+    private int selectedSpecialCardIndex = -1;
 
     // 特殊カード表示エリア
     private LinearLayout specialCardContainer;
@@ -268,32 +268,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     // 特殊カードを配布する
     private void distributeSpecialCards() {
 
         playerSpecialCards.clear();
         enemySpecialCards.clear();
 
-        selectedSpecialCard = -1;
+        selectedSpecialCardIndex = -1;
 
-        // 3種類の特殊カードを用意
-        ArrayList<Integer> specialDeck = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++) {
-            specialDeck.add(i);
+        // 自分にランダムで2枚配る
+        for (int i = 0; i < 2; i++) {
+            playerSpecialCards.add(random.nextInt(3));
         }
 
-        // シャッフル
-        Collections.shuffle(specialDeck);
-
-        // 自分に1枚
-        playerSpecialCards.add(specialDeck.get(0));
-
-        // 相手に1枚（自分とは重複しない）
-        enemySpecialCards.add(specialDeck.get(1));
-
-        // specialDeck.get(2) は未配布
+        // 相手にランダムで2枚配る
+        for (int i = 0; i < 2; i++) {
+            enemySpecialCards.add(random.nextInt(3));
+        }
     }
+
 
     // 自分の特殊カードを表示する
     private void updateSpecialCards() {
@@ -302,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         specialCardContainer.removeAllViews();
+        specialCardContainer.setOrientation(LinearLayout.HORIZONTAL);
 
         if (!isSpecialMode) {
             specialCardContainer.setVisibility(View.GONE);
@@ -316,19 +311,29 @@ public class MainActivity extends AppCompatActivity {
             Button specialButton = new Button(this);
 
             specialButton.setText(specialCardNames[card]);
-            specialButton.setTextSize(10);
+            specialButton.setTextSize(14);
+
+            specialButton.setBackgroundResource(
+                    R.drawable.card_background
+            );
 
             LinearLayout.LayoutParams params =
                     new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            55
+                            130,
+                            180
                     );
+
+            params.setMargins(8, 0, 8, 0);
+
+            params.setMargins(8, 0, 8, 0);
+            specialButton.setLayoutParams(params);
+
 
             params.setMargins(2, 3, 2, 3);
             specialButton.setLayoutParams(params);
 
             // 選択中のカードを黄色にする
-            if (selectedSpecialCard == card) {
+            if (selectedSpecialCardIndex == card) {
                 specialButton.setBackgroundColor(0xFFFFD54F);
             } else {
                 specialButton.setBackgroundResource(
@@ -338,10 +343,10 @@ public class MainActivity extends AppCompatActivity {
 
             specialButton.setOnClickListener(v -> {
 
-                if (selectedSpecialCard == card) {
-                    selectedSpecialCard = -1;
+                if (selectedSpecialCardIndex == card) {
+                    selectedSpecialCardIndex = -1;
                 } else {
-                    selectedSpecialCard = card;
+                    selectedSpecialCardIndex = card;
                 }
 
                 updateSpecialCards();
@@ -367,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
 
         noSpecialButton.setOnClickListener(v -> {
 
-            selectedSpecialCard = -1;
+            selectedSpecialCardIndex = -1;
 
             updateSpecialCards();
         });
@@ -411,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             playerSpecialCards.clear();
             enemySpecialCards.clear();
-            selectedSpecialCard = -1;
+            selectedSpecialCardIndex = -1;
         }
 
         playerHand = new ArrayList<>(
@@ -453,15 +458,15 @@ public class MainActivity extends AppCompatActivity {
         if (isSpecialMode) {
 
             // 自分が選択した特殊カードを使用
-            if (selectedSpecialCard != -1) {
+            if (selectedSpecialCardIndex != -1) {
 
-                playerSpecialUsed = selectedSpecialCard;
+                playerSpecialUsed = selectedSpecialCardIndex;
 
                 playerSpecialCards.remove(
-                        Integer.valueOf(selectedSpecialCard)
+                        Integer.valueOf(selectedSpecialCardIndex)
                 );
 
-                selectedSpecialCard = -1;
+                selectedSpecialCardIndex = -1;
             }
 
             // 相手は特殊カードを使うかランダムで決定
