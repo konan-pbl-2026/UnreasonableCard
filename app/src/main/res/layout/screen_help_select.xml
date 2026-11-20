@@ -10,13 +10,15 @@
     android:paddingBottom="120dp"
     android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- 遊び方説明の画像 -->
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="遊び方説明"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
+        android:src="@drawable/rule"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="遊び方説明" />
 
     <Button
         android:id="@+id/normalHelpButton"
