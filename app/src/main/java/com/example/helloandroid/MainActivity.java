@@ -1,4 +1,3 @@
-
 package com.example.helloandroid;
 
 import android.graphics.Color;
@@ -58,10 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     // ===== 特殊カード管理 =====
 
-    // 特殊カードの番号
-    // 0 = specialCard1
-    // 1 = specialCard2
-    // 2 = specialCard3
+    // 0 = 体力吸収
+    // 1 = あとだし
+    // 2 = 勝敗逆転
 
     private ArrayList<Integer> playerSpecialCards = new ArrayList<>();
     private ArrayList<Integer> enemySpecialCards = new ArrayList<>();
@@ -80,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
             "勝敗逆転"
     };
 
+    // ===== あとだし用の変数 =====
+
+    private boolean waitingForAfterDashiChoice = false;
+
+    private int pendingEnemyChoice = -1;
+    private int pendingEnemyIndex = -1;
+
+    private int pendingPlayerSpecial = -1;
+    private int pendingEnemySpecial = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         helpSelectScreen = findViewById(R.id.helpSelectScreen);
         helpNormalScreen = findViewById(R.id.helpNormalScreen);
         helpSpecialScreen = findViewById(R.id.helpSpecialScreen);
+
         // 通常モード画面と特殊モード画面
         normalGameScreen = findViewById(R.id.normalGameLayout);
         specialGameScreen = findViewById(R.id.specialGameLayout);
@@ -121,22 +130,26 @@ public class MainActivity extends AppCompatActivity {
         Button retryButton = findViewById(R.id.retryButton);
         Button titleButton = findViewById(R.id.titleButton);
 
-// 通常モード開始
+        // 通常モード開始
         normalModeButton.setOnClickListener(v -> {
             isSpecialMode = false;
+
             startScreen.setVisibility(View.GONE);
             specialGameScreen.setVisibility(View.GONE);
             normalGameScreen.setVisibility(View.VISIBLE);
+
             setGameViews();
             startGame();
         });
 
-// 特殊モード開始
+        // 特殊モード開始
         specialModeButton.setOnClickListener(v -> {
             isSpecialMode = true;
+
             startScreen.setVisibility(View.GONE);
             normalGameScreen.setVisibility(View.GONE);
             specialGameScreen.setVisibility(View.VISIBLE);
+
             setGameViews();
             startGame();
         });
@@ -177,9 +190,10 @@ public class MainActivity extends AppCompatActivity {
             helpSelectScreen.setVisibility(View.VISIBLE);
         });
 
-// ゲームに戻る
+        // ゲームに戻る
         resumeButton.setOnClickListener(v -> {
             pauseScreen.setVisibility(View.GONE);
+
             if (isSpecialMode) {
                 specialGameScreen.setVisibility(View.VISIBLE);
             } else {
@@ -190,16 +204,18 @@ public class MainActivity extends AppCompatActivity {
         // ポーズ中に最初から
         pauseRetryButton.setOnClickListener(v -> {
             pauseScreen.setVisibility(View.GONE);
+
             if (isSpecialMode) {
                 specialGameScreen.setVisibility(View.VISIBLE);
             } else {
                 normalGameScreen.setVisibility(View.VISIBLE);
             }
+
             setGameViews();
             startGame();
         });
 
-// ポーズ中にタイトルに戻る
+        // ポーズ中にタイトルに戻る
         pauseTitleButton.setOnClickListener(v -> {
             pauseScreen.setVisibility(View.GONE);
             normalGameScreen.setVisibility(View.GONE);
@@ -210,23 +226,24 @@ public class MainActivity extends AppCompatActivity {
         // 対戦終了後にもう一度
         retryButton.setOnClickListener(v -> {
             resultScreen.setVisibility(View.GONE);
+
             if (isSpecialMode) {
                 specialGameScreen.setVisibility(View.VISIBLE);
             } else {
                 normalGameScreen.setVisibility(View.VISIBLE);
             }
+
             setGameViews();
             startGame();
         });
 
-// 対戦終了後にタイトルに戻る
+        // 対戦終了後にタイトルに戻る
         titleButton.setOnClickListener(v -> {
             resultScreen.setVisibility(View.GONE);
             normalGameScreen.setVisibility(View.GONE);
             specialGameScreen.setVisibility(View.GONE);
             startScreen.setVisibility(View.VISIBLE);
         });
-
     }
 
     // 選択したモードの画面部品を取得する
@@ -256,17 +273,19 @@ public class MainActivity extends AppCompatActivity {
             specialCardContainer =
                     currentScreen.findViewById(R.id.specialCardContainer);
         }
+
         // ポーズボタン
         pauseButton.setOnClickListener(v -> {
+
             if (isSpecialMode) {
                 specialGameScreen.setVisibility(View.GONE);
             } else {
                 normalGameScreen.setVisibility(View.GONE);
             }
+
             pauseScreen.setVisibility(View.VISIBLE);
         });
     }
-
 
     // 特殊カードを配布する
     private void distributeSpecialCards() {
@@ -297,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 自分の特殊カードを表示する
     private void updateSpecialCards() {
+
         if (specialCardContainer == null) {
             return;
         }
@@ -338,6 +358,14 @@ public class MainActivity extends AppCompatActivity {
 
             specialButton.setOnClickListener(v -> {
 
+                // あとだしは手札が2枚以上必要
+                if (card == 1 && playerHand.size() <= 1) {
+                    resultText.setText(
+                            "あとだしを使うには手札が2枚以上必要です"
+                    );
+                    return;
+                }
+
                 if (selectedSpecialCard == card) {
                     selectedSpecialCard = -1;
                 } else {
@@ -377,12 +405,15 @@ public class MainActivity extends AppCompatActivity {
 
     // 特殊カードの操作を有効・無効にする
     private void setSpecialCardsEnabled(boolean enabled) {
+
         if (specialCardContainer == null) {
             return;
         }
+
         for (int i = 0;
              i < specialCardContainer.getChildCount();
              i++) {
+
             specialCardContainer.getChildAt(i).setEnabled(enabled);
         }
     }
@@ -392,6 +423,15 @@ public class MainActivity extends AppCompatActivity {
 
         playerLife = 3;
         enemyLife = 3;
+
+        // あとだしの状態を初期化
+        waitingForAfterDashiChoice = false;
+
+        pendingEnemyChoice = -1;
+        pendingEnemyIndex = -1;
+
+        pendingPlayerSpecial = -1;
+        pendingEnemySpecial = -1;
 
         int cardCountPerHand = 5;
 
@@ -443,6 +483,30 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // あとだしの2回目のカード選択だった場合
+        if (waitingForAfterDashiChoice) {
+
+            waitingForAfterDashiChoice = false;
+
+            // 2回目に選んだカードを表示
+            battlePlayerCard.setText(hands[playerChoice]);
+            battlePlayerCard.setVisibility(View.VISIBLE);
+
+            setCardsEnabled(false);
+
+            resultText.setText("あとだし！カードを変更しました");
+
+            resolveJanken(
+                    playerChoice,
+                    pendingEnemyChoice,
+                    pendingEnemyIndex,
+                    pendingPlayerSpecial,
+                    pendingEnemySpecial
+            );
+
+            return;
+        }
+
         pauseButton.setEnabled(false);
         setCardsEnabled(false);
 
@@ -455,11 +519,15 @@ public class MainActivity extends AppCompatActivity {
             // 自分が選択した特殊カードを使用
             if (selectedSpecialCard != -1) {
 
-                playerSpecialUsed = selectedSpecialCard;
+                // あとだしは手札が2枚以上ある場合だけ使用
+                if (selectedSpecialCard != 1 || playerHand.size() > 1) {
 
-                playerSpecialCards.remove(
-                        Integer.valueOf(selectedSpecialCard)
-                );
+                    playerSpecialUsed = selectedSpecialCard;
+
+                    playerSpecialCards.remove(
+                            Integer.valueOf(selectedSpecialCard)
+                    );
+                }
 
                 selectedSpecialCard = -1;
             }
@@ -468,7 +536,13 @@ public class MainActivity extends AppCompatActivity {
             if (!enemySpecialCards.isEmpty()
                     && random.nextBoolean()) {
 
-                enemySpecialUsed = enemySpecialCards.remove(0);
+                int enemySpecialCandidate = enemySpecialCards.get(0);
+
+                // あとだしは別のカードを選べる場合だけ使用
+                if (enemySpecialCandidate != 1 || enemyHand.size() > 1) {
+
+                    enemySpecialUsed = enemySpecialCards.remove(0);
+                }
             }
 
             updateSpecialCards();
@@ -478,6 +552,22 @@ public class MainActivity extends AppCompatActivity {
         // 相手のじゃんけんの手を決定
         int enemyIndex = random.nextInt(enemyHand.size());
         int enemyChoice = enemyHand.get(enemyIndex);
+
+        // 相手があとだしを使った場合
+        // 最初に選んだカードとは別のカードを選ぶ
+        if (enemySpecialUsed == 1 && enemyHand.size() > 1) {
+
+            int originalEnemyIndex = enemyIndex;
+
+            int secondIndex = random.nextInt(enemyHand.size() - 1);
+
+            if (secondIndex >= originalEnemyIndex) {
+                secondIndex++;
+            }
+
+            enemyIndex = secondIndex;
+            enemyChoice = enemyHand.get(enemyIndex);
+        }
 
         battlePlayerCard.setText(hands[playerChoice]);
 
@@ -497,30 +587,57 @@ public class MainActivity extends AppCompatActivity {
 
         resultText.setText("カードをセット！ 相手が選んでいます...");
 
-        // 特殊カードの使用情報も勝敗判定に渡す
+        // 特殊カードの使用情報を保存
         final int finalPlayerSpecial = playerSpecialUsed;
         final int finalEnemySpecial = enemySpecialUsed;
 
+        final int finalEnemyChoice = enemyChoice;
+        final int finalEnemyIndex = enemyIndex;
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
-            battleEnemyCard.setText(hands[enemyChoice]);
+            battleEnemyCard.setText(hands[finalEnemyChoice]);
 
             battleEnemyCard.setBackgroundResource(
                     R.drawable.card_background
             );
 
-            resolveJanken(
-                    playerChoice,
-                    enemyChoice,
-                    enemyIndex,
-                    finalPlayerSpecial,
-                    finalEnemySpecial
-            );
+            // 自分があとだしを使った場合
+            if (finalPlayerSpecial == 1) {
+
+                waitingForAfterDashiChoice = true;
+
+                pendingEnemyChoice = finalEnemyChoice;
+                pendingEnemyIndex = finalEnemyIndex;
+
+                pendingPlayerSpecial = finalPlayerSpecial;
+                pendingEnemySpecial = finalEnemySpecial;
+
+                resultText.setText(
+                        "あとだし発動！\nもう一度手札からカードを選んでください"
+                );
+
+                // 手札を再表示
+                updateScreen();
+
+                // 特殊カードは選べないようにする
+                setSpecialCardsEnabled(false);
+
+            } else {
+
+                // あとだしを使っていない場合は通常通り判定
+                resolveJanken(
+                        playerChoice,
+                        finalEnemyChoice,
+                        finalEnemyIndex,
+                        finalPlayerSpecial,
+                        finalEnemySpecial
+                );
+            }
 
         }, 1000);
     }
 
-    // じゃんけんの勝敗判定
     // じゃんけんの勝敗判定
     private void resolveJanken(
             int playerChoice,
@@ -529,6 +646,7 @@ public class MainActivity extends AppCompatActivity {
             int playerSpecialUsed,
             int enemySpecialUsed) {
 
+        // 最終的に使用したカードを手札から削除
         playerHand.remove(Integer.valueOf(playerChoice));
         enemyHand.remove(enemyIndex);
 
@@ -540,37 +658,61 @@ public class MainActivity extends AppCompatActivity {
         // -1 = 相手勝利
         int winner = 0;
 
+        // 通常の勝敗判定
         if (playerChoice == enemyChoice) {
 
-            message += "あいこ！ライフは変化なし";
+            winner = 0;
 
         } else if ((playerChoice - enemyChoice + 3) % 3 == 2) {
 
-            enemyLife--;
             winner = 1;
+
+        } else {
+
+            winner = -1;
+        }
+
+        // 勝敗逆転カードの処理
+        if (isSpecialMode && winner != 0
+                && (playerSpecialUsed == 2 || enemySpecialUsed == 2)) {
+
+            winner = -winner;
+
+            message += "勝敗逆転カード発動！\n";
+        }
+
+        // 勝敗に応じてライフを減らす
+        if (winner == 0) {
+
+            message += "あいこ！ライフは変化なし";
+
+        } else if (winner == 1) {
+
+            enemyLife--;
 
             message += "あなたの勝ち！相手のライフ -1";
 
         } else {
 
             playerLife--;
-            winner = -1;
 
             message += "あなたの負け！自分のライフ -1";
         }
 
         // 使用した特殊カードを表示
         if (playerSpecialUsed != -1) {
-            message += "\nあなたが使用：" +
-                    specialCardNames[playerSpecialUsed];
+
+            message += "\nあなたが使用："
+                    + specialCardNames[playerSpecialUsed];
         }
 
         if (enemySpecialUsed != -1) {
-            message += "\n相手が使用：" +
-                    specialCardNames[enemySpecialUsed];
+
+            message += "\n相手が使用："
+                    + specialCardNames[enemySpecialUsed];
         }
 
-        // specialCard1の効果
+        // 体力吸収の効果
         if (isSpecialMode && winner != 0
                 && (playerSpecialUsed == 0
                 || enemySpecialUsed == 0)) {
@@ -579,9 +721,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // 自分が勝利した場合
                 if (playerLife < 3) {
+
                     playerLife++;
+
                     message += "\n特殊効果発動！あなたのライフ＋1";
+
                 } else {
+
                     message += "\n特殊効果発動！あなたのライフは最大です";
                 }
 
@@ -589,9 +735,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // 相手が勝利した場合
                 if (enemyLife < 3) {
+
                     enemyLife++;
+
                     message += "\n特殊効果発動！相手のライフ＋1";
+
                 } else {
+
                     message += "\n特殊効果発動！相手のライフは最大です";
                 }
             }
@@ -605,8 +755,18 @@ public class MainActivity extends AppCompatActivity {
 
         pauseButton.setEnabled(true);
 
+        // あとだしの情報をリセット
+        waitingForAfterDashiChoice = false;
+
+        pendingEnemyChoice = -1;
+        pendingEnemyIndex = -1;
+
+        pendingPlayerSpecial = -1;
+        pendingEnemySpecial = -1;
+
         // ライフが0になった場合
         finalResultText.setTextColor(Color.parseColor("#00C853"));
+
         if (playerLife <= 0 || enemyLife <= 0) {
 
             if (playerLife <= 0 && enemyLife <= 0) {
@@ -654,7 +814,6 @@ public class MainActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 endGame();
             }, 2000);
-
         }
     }
 
@@ -671,6 +830,7 @@ public class MainActivity extends AppCompatActivity {
             int cardType = playerHand.get(i);
 
             Button cardButton = new Button(this);
+
             cardButton.setText(hands[cardType]);
             cardButton.setTextSize(18);
             cardButton.setBackgroundResource(R.drawable.card_background);
@@ -691,6 +851,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < enemyHand.size(); i++) {
 
             View enemyCardView = new View(this);
+
             enemyCardView.setBackgroundResource(
                     R.drawable.enemy_card_background
             );
@@ -703,6 +864,7 @@ public class MainActivity extends AppCompatActivity {
 
             enemyCardContainer.addView(enemyCardView);
         }
+
         // 特殊カード表示を更新
         updateSpecialCards();
     }
@@ -743,19 +905,28 @@ public class MainActivity extends AppCompatActivity {
         );
 
         if (playerLife > enemyLife) {
+
             finalResultText.setText("あなたの勝ち！");
+
         } else if (playerLife < enemyLife) {
+
             finalResultText.setText("あなたの負け！");
+
         } else {
+
             finalResultText.setText("引き分け！");
         }
 
-// 使用中のゲーム画面を非表示にする
+        // 使用中のゲーム画面を非表示にする
         if (isSpecialMode) {
+
             specialGameScreen.setVisibility(View.GONE);
+
         } else {
+
             normalGameScreen.setVisibility(View.GONE);
         }
+
         resultScreen.setVisibility(View.VISIBLE);
     }
 }
