@@ -22,15 +22,6 @@
             android:layout_height="wrap_content"
             android:text="Ⅱ ポーズ" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="カードじゃんけん"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center" />
-
         <View
             android:layout_width="88dp"
             android:layout_height="1dp" />
