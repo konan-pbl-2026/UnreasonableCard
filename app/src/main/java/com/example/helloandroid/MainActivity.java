@@ -427,11 +427,15 @@ public class MainActivity extends AppCompatActivity {
         pendingPlayerSpecial = -1;
         pendingEnemySpecial = -1;
 
+// 山札の各カード枚数
+        int cardCountPerType = 4;
+
+// 自分と相手に配る枚数
         int cardCountPerHand = 5;
 
         ArrayList<Integer> deck = new ArrayList<>();
 
-        for (int i = 0; i < cardCountPerHand; i++) {
+        for (int i = 0; i < cardCountPerType; i++) {
             deck.add(0);
             deck.add(1);
             deck.add(2);
