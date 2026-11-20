@@ -11,13 +11,15 @@
     android:paddingBottom="120dp"
     android:visibility="gone">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- PAUSE画像 -->
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PAUSE"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
+        android:src="@drawable/pause"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="PAUSE" />
 
     <Button
         android:id="@+id/resumeButton"

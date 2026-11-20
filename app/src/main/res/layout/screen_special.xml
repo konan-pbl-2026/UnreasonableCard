@@ -123,11 +123,20 @@
         </LinearLayout>
 
         <!-- 結果メッセージ -->
+        <ImageView
+            android:id="@+id/resultImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/special_select"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:contentDescription="手札からカードを選んでください" />
+
         <TextView
             android:id="@+id/resultText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="手札からカードを選んでください"
+            android:text=""
             android:textSize="16sp"
             android:gravity="center" />
 

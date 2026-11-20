@@ -119,13 +119,24 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/resultImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/normal_select"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:contentDescription="手札からカードを選んでください" />
+
         <TextView
             android:id="@+id/resultText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="手札からカードを選んでください"
+            android:text=""
             android:textSize="16sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:visibility="gone" />
+
 
     </LinearLayout>
 

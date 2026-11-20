@@ -427,12 +427,6 @@ public class MainActivity extends AppCompatActivity {
         battleEnemyCard.setVisibility(View.INVISIBLE);
 
         updateScreen();
-
-        if (isSpecialMode) {
-            resultText.setText("【特殊モード】手札からカードを選んでください");
-        } else {
-            resultText.setText("手札からカードを選んでください");
-        }
     }
 
     // カードをタップした時の処理
@@ -616,7 +610,11 @@ public class MainActivity extends AppCompatActivity {
 
             resultText.setText(message);
 
-            endGame();
+            // じゃんけんの結果を2秒間表示してから終了画面へ
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                endGame();
+            }, 2000);
+
             return;
         }
 
@@ -638,7 +636,11 @@ public class MainActivity extends AppCompatActivity {
 
             resultText.setText(message);
 
-            endGame();
+            // じゃんけんの結果を2秒間表示してから終了画面へ
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                endGame();
+            }, 2000);
+
         }
     }
 
